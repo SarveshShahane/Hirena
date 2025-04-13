@@ -1,0 +1,43 @@
+<% layout("layouts/baseTemplate.ejs") %>
+
+<div class="container mt-4">
+    <h2>Job Applications</h2>
+
+    <% if (applications.length > 0) { %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Applicant</th>
+                    <th>Email</th>
+                    <th>Resume</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% applications.forEach(app => { %>
+                    <tr>
+                        <td><%= app.job.title %></td>
+                        <td><%= app.jobSeeker.username %></td>
+                        <td><%= app.jobSeeker.email %></td>
+                        <td>
+                            <a href="/resume/<%= app.resume._id %>" class="btn btn-info btn-sm">View Resume</a>
+                        </td>
+                        <td>
+                            <form action="/update-status/<%= app._id %>" method="POST">
+                              <select name="status" class="form-select form-select-sm d-inline w-auto">
+                                <option value="Pending" <%= app.status === "Pending" ? "selected" : "" %>>Pending</option>
+                                <option value="Accepted" <%= app.status === "Accepted" ? "selected" : "" %>>Accepted</option>
+                                <option value="Rejected" <%= app.status === "Rejected" ? "selected" : "" %>>Rejected</option>
+                            </select>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No applications received yet.</p>
+    <% } %>
+</div>

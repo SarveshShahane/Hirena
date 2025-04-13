@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4 text-primary" href="/hirena">Hirena</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 text-dark" href="/hirena/">Home</a>
+        </li>
+        <% if (user && user.role === "JobSeeker") { %>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold px-3 text-dark" href="/jobs/list">Jobs</a>
+          </li>
+        <% } %>
+        
+        
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 text-dark" href="/contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 text-dark" href="/about">About Us</a>
+        </li>
+
+        <% if (user) { %> 
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold px-3 text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Account
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-sm">
+              <% if (user.role === "JobSeeker") { %>
+                <li><a class="dropdown-item text-dark" href="/profile">Profile</a></li>
+                <li><a class="dropdown-item text-dark" href="/jobseeker/applications">My Applications</a></li>
+              <% } %>
+
+              <% if (user.role === "Employer") { %>
+                <li><a class="dropdown-item text-dark" href="/employers/dashboard">Dashboard</a></li>
+                <li><a class="dropdown-item text-dark" href="/jobs/new">Post a Job</a></li>
+              <% } %>
+
+              <% if (user.role === "Admin") { %>
+                <li><a class="dropdown-item text-dark" href="/admin/dashboard">Admin Dashboard</a></li>
+              <% } %>
+
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger fw-semibold" href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-primary text-dark rounded-pill px-3 mx-2 fw-semibold" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary text-dark rounded-pill px-3 fw-semibold" href="/signup">Signup</a>
+          </li>
+        <% } %>
+
+      </ul>
+    </div>
+  </div>
+</nav>

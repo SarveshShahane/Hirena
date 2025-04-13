@@ -1,0 +1,47 @@
+<% layout("layouts/baseTemplate.ejs") %>
+
+<div class="container mt-4">
+    <h2>Resume of <%= resume.user.username %></h2>
+    <p><strong>Email:</strong> <%= resume.user.email %></p>
+
+    <h4>Contact</h4>
+    <p><strong>Phone:</strong> +<%= resume.contact.countryCode %> <%= resume.contact.number %></p>
+
+    <h4>Career Objective</h4>
+    <p><%= resume.careerObjective %></p>
+
+    <h4>Education</h4>
+    <ul>
+        <% resume.education.forEach(edu => { %>
+            <li><strong><%= edu.degree %></strong> - <%= edu.institution %> (<%= edu.year %>)</li>
+        <% }) %>
+    </ul>
+
+    <h4>Work Experience</h4>
+    <ul>
+        <% resume.workExperience.forEach(exp => { %>
+            <li><strong><%= exp.jobRole %></strong> at <%= exp.company %> (<%= exp.yearsWorked %>)</li>
+            <p><%= exp.details %></p>
+        <% }) %>
+    </ul>
+
+    <h4>Skills</h4>
+    <p><%= resume.skills.join(", ") %></p>
+
+    <h4>Projects</h4>
+    <ul>
+        <% resume.projects.forEach(proj => { %>
+            <li>
+                <strong><%= proj.title %></strong>: <%= proj.description %>  
+                [<a href="<%= proj.repoLink.startsWith('http') ? proj.repoLink : 'https://' + proj.repoLink %>" target="_blank">GitHub</a> | 
+                <a href="<%= proj.liveDemo.startsWith('http') ? proj.liveDemo : 'https://' + proj.liveDemo %>" target="_blank">Live Demo</a>]
+               
+            </li>
+        <% }) %>
+    </ul>
+
+    <% if (resume.portfolio) { %>
+        <h4>Portfolio</h4>
+        <a href="<%= resume.portfolio %>" target="_blank"><%= resume.portfolio %></a>
+    <% } %>
+</div>

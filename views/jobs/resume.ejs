@@ -1,0 +1,594 @@
+<%layout("layouts/baseTemplate")%>
+<h1 class="mt-3"><strong>Your Career Profile on Hirena</strong></h1>
+<div class="resume mt-4 p-2 mb-4">
+    <form action="/profile/resume" method="POST" onsubmit="return checkSubmit(event)">
+
+      <h1><%=user.username%></h1>
+        <p class="lead"><%=user.email%></p>
+      <div class="contact">
+        <% if (resume && resume.contact && resume.contact.number) { %>
+            <p><%= resume.contact.countryCode || '' %> <%= resume.contact.number %></p>
+        <% } else { %>
+            <div>
+                <label>Country Code:</label>
+                <select name="contact[countryCode]">
+                    <option value="">Select</option>
+                    <% let countries = [
+                        { name: "United States", code: "+1" },
+                        { name: "United Kingdom", code: "+44" },
+                        { name: "India", code: "+91" },
+                        { name: "Canada", code: "+1" },
+                        { name: "Australia", code: "+61" },
+                        { name: "Germany", code: "+49" },
+                        { name: "France", code: "+33" }
+                    ]; %>
+                    <% countries.forEach(country => { %>
+                        <option value="<%= country.code %>" <%= (resume && resume.contact && resume.contact.countryCode === country.code) ? "selected" : "" %>>
+                            <%= country.name %> (<%= country.code %>)
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+        
+            <div>
+                <label>Contact Number:</label>
+                <input type="text" name="contact[number]" value="<%= (resume && resume.contact && resume.contact.number) || '' %>">
+            </div>
+        <% } %>
+      </div>
+    <div class="location fs-5">
+        <% if (user &&  user.profile&& user.profile.location.city && user.profile.location.country) { %>
+            <p><%= user.profile.location.city %>, <%= user.profile.location.country %></p>
+        <% } else { %>
+            <div>
+                <label>City:</label>
+                <input type="text" name="city" value="<%= user.profile?.location?.city || '' %>">
+            </div>
+            <div>
+                <label>Country:</label>
+                <input type="text" name="country" value="<%= user.profile?.location?.country || '' %>">
+            </div>
+        <% } %>
+    </div>
+<hr>
+            
+    
+        <div class="objective fs-5">
+            <label>Career Objectives</label>
+            <textarea class="form-control w-100 h-100 overflow-auto" name="careerObjective" ><%= resume.careerObjective || '' %></textarea>
+        </div>
+    
+        <br>
+        <hr >
+          
+        <div class="education">
+            <h4 class="fs-5">Education</h4>
+
+            <div id="educationContainer">
+
+            </div>
+            
+            <button class=" add-edu fs-5 pb-4 pt-3" type="button" id="showEducationFields">+ Add New Education</button>
+           
+            <div id="educationInputs" style="display: none;">
+                <input type="text" id="degreeInput" placeholder="Degree"  class="form-control p-2 mb-3">
+                <input type="text" id="institutionInput" placeholder="Institution"  class="form-control p-2 mb-3">
+                <input type="number" id="yearInput" placeholder="Year"  class="form-control p-2 mb-3">
+
+                <button class=" btn  btn-primary" type="button" id="addEducation">Add</button>
+            </div>
+            <input  type="hidden" name="education" id="educationData" value='<%- JSON.stringify(resume.education || []) %>'>
+            
+         
+        </div>
+    <hr>
+    <div class="work-exp">
+        <h4 class="fs-5">Work Experience</h4>
+    
+    <div id="workExperienceContainer">
+      
+    </div>
+    
+    <button class="add-work fs-5 pb-4 pt-3" type="button" id="showWorkFields">+ Add New Work Experience</button>
+    
+    <div id="workInputs" style="display: none;">
+        <input type="text" id="jobRoleInput" placeholder="Job Role"  class="form-control p-2 mb-3">
+        <input type="text" id="companyInput" placeholder="Company"  class="form-control p-2 mb-3">
+        <input type="text" id="yearsWorkedInput" placeholder="Years Worked"  class="form-control p-2 mb-3">
+        <textarea id="detailsInput" placeholder="Details about your role"  class="form-control p-2 mb-3"></textarea>
+        <button class="btn btn-primary" type="button" id="addWork">Add</button>
+    </div>
+    
+    <input type="hidden" name="workExperience" id="workData" value='<%- JSON.stringify(resume.workExperience || []).replace(/'/g, "&#39;") %>'>
+    
+    </div>
+    <br>
+    <hr>
+    <br>
+
+  <div>
+    <h4 class="fs-5">Skills</h4>
+
+  
+    
+    <div class="dropdown">
+        <input type="text" id="skillInput" class="form-control mb-2" placeholder="Search and add skills">
+        <ul id="skillsDropdown" class="dropdown-menu w-100"></ul>
+    </div>
+    
+    <ul id="skillsList"></ul>
+    
+    <button3 type="button" id="addSkillBtn"></button>
+    
+    <input type="hidden" name="skills" id="skillsData" value='<%- JSON.stringify(resume.skills || []) %>' >
+    
+  
+  </div>  
+    <hr>
+    <div class="projects">
+        <h4 class="fs-5">Projects</h4>
+    
+    <div id="projectsContainer">
+    </div>
+    
+    <button class="add-proj fs-5 pb-4 pt-3" type="button" id="showProjectFields">+ Add New Project</button>
+
+    <div class="mt-2" id="projectInputs" style="display: none;">
+        <input type="text" id="titleInput" placeholder="Project Title"  class="form-control p-2 mb-3">
+        <textarea id="descriptionInput" placeholder="Project Description"  class="form-control p-2 mb-3"></textarea>
+        <input type="text" id="repoLinkInput" placeholder="GitHub Repo Link"  class="form-control p-2 mb-3">
+        <input type="text" id="liveDemoInput" placeholder="Live Demo Link"  class="form-control p-2 mb-3">
+        <button class="btn btn-primary mb-4 mt-2 " type="button" id="addProject">Add</button>
+    </div>
+    <hr>
+    <input type="hidden" name="projects" id="projectsData" value='<%- JSON.stringify(resume.projects || []) %>'>
+    </div>
+    <div class="extra-act">
+        <h4 class="fs-5">Extra Activities</h4>
+        <div class="d-flex align-items-center gap-2">
+            <input type="text" id="extraActivitiesInput" placeholder="Enter an activity" class="form-control p-2 ">
+            <button class="btn btn-primary" type="button" id="addActivity">Add</button>
+        </div>
+        <br>
+        <ul id="extraActivitiesList"></ul>
+    <input type="hidden" name="extraActivities" id="extraActivitiesData" value='<%- JSON.stringify(resume.extraActivities || []) %>'>
+    </div>
+        <hr>
+
+        
+        <div class="mb-3">
+            <label class="form-label fs-5">Portfolio</label>
+        
+            <div id="portfolioContainer">
+                <% if (user.profile && user.profile.resume && user.profile.resume.portfolio && user.profile.resume.portfolio.trim() !== "") { %>
+                    <div class="d-flex align-items-center gap-2 fs-5 p-2 rounded border shadow-sm">
+                        <a href="<%= user.profile.resume.portfolio %>" target="_blank" class="text-primary text-decoration-none flex-grow-1">
+                            <%= user.profile.resume.portfolio %>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" id="deletePortfolioBtn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                <% } %>
+            </div>
+        
+            <input type="url" name="portfolio" id="portfolioInput" class="form-control mt-2" placeholder="Enter Portfolio Link"
+                value="<%= user.profile.resume && user.profile.resume.portfolio ? user.profile.resume.portfolio : '' %>"
+                <% if (user.profile.resume && user.profile.resume.portfolio) { %> style="display:none;" <% } %> >
+        </div>
+        
+<br><hr>
+        <div class="mb-3">
+            <label for="additionalDetails" class="form-label fs-5">Additional Details</label>
+            <textarea id="additionalDetails" name="additionalDetails" class="form-control p-3 border rounded shadow-sm"
+             rows="4"
+                placeholder="Any extra information..."><%= resume.additionalDetails || '' %></textarea>
+        </div>
+        
+        
+    
+    <hr>
+        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm px-4">
+            <i class="fas fa-save me-2"></i> Save Resume
+        </button>
+        
+
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const educationContainer = document.getElementById("educationContainer");
+        const showEducationFieldsBtn = document.getElementById("showEducationFields");
+        const educationInputsDiv = document.getElementById("educationInputs");
+        const addEducationBtn = document.getElementById("addEducation");
+        const educationDataInput = document.getElementById("educationData");
+    
+        let educationArray = JSON.parse(educationDataInput.value || "[]");
+    
+        function updateHiddenInput() {
+            educationDataInput.value = JSON.stringify(educationArray);
+        }
+        function renderEducation() {
+    educationContainer.innerHTML = ""; // Clear container
+    educationArray.forEach((edu, index) => {
+        const entryDiv = document.createElement("div");
+        entryDiv.classList.add("education-entry", "border", "p-3", "mb-3", "rounded", "shadow-sm", "bg-light"); // Added Bootstrap classes
+        entryDiv.dataset.index = index;
+        entryDiv.innerHTML = `
+            <p class="fs-5  text-dark">${edu.degree}</p>
+            <p class="fs-6 text-dark">${edu.institution}</p>
+            <p class="text-muted">${edu.year}</p>
+            <button type="button" class="delete-education btn btn-danger btn-sm mt-2" data-index="${index}">Delete</button>
+        `;
+        educationContainer.appendChild(entryDiv);
+    });
+}
+
+    
+        showEducationFieldsBtn.addEventListener("click", function () {
+            educationInputsDiv.style.display = "block";
+        });
+    
+        addEducationBtn.addEventListener("click", function () {
+            const degree = document.getElementById("degreeInput").value.trim();
+            const institution = document.getElementById("institutionInput").value.trim();
+            const year = document.getElementById("yearInput").value.trim();
+    
+            if (!degree || !institution || !year) {
+                alert("All fields must be filled!");
+                return;
+            }
+    
+            const newEntry = { degree, institution, year };
+            educationArray.push(newEntry);
+            updateHiddenInput();
+    
+            renderEducation(); // Re-render the education list
+    
+            document.getElementById("degreeInput").value = "";
+            document.getElementById("institutionInput").value = "";
+            document.getElementById("yearInput").value = "";
+    
+            educationInputsDiv.style.display = "none";
+        });
+    
+        educationContainer.addEventListener("click", function (event) {
+            if (event.target.classList.contains("delete-education")) {
+                const index = event.target.dataset.index;
+                educationArray.splice(index, 1);
+                updateHiddenInput();
+                renderEducation();
+            }
+        });
+    
+        renderEducation();
+    });
+    </script>
+        <script>document.addEventListener("DOMContentLoaded", function () {
+            const workContainer = document.getElementById("workExperienceContainer");
+            const showWorkFieldsBtn = document.getElementById("showWorkFields");
+            const workInputsDiv = document.getElementById("workInputs");
+            const addWorkBtn = document.getElementById("addWork");
+            const workDataInput = document.getElementById("workData");
+        
+            let workArray = [];
+        
+            try {
+                workArray = JSON.parse(workDataInput.value || "[]");
+            } catch (error) {
+                console.error("Error parsing work experience:", error);
+            }
+        
+            function updateHiddenInput() {
+                workDataInput.value = JSON.stringify(workArray);
+            }
+            showWorkFieldsBtn.addEventListener("click", function () {
+                workInputsDiv.style.display = workInputsDiv.style.display === "none" ? "block" : "none";
+            });
+        
+            function renderWorkExperience() {
+                workContainer.innerHTML = "";
+                workArray.forEach((exp, index) => {
+                    const entryDiv = document.createElement("div");
+                    entryDiv.classList.add("work-entry", "border", "p-3", "mb-3", "rounded", "shadow-sm", "bg-light");
+                    entryDiv.dataset.index = index;
+                    entryDiv.innerHTML = `
+                        <p class="fs-5 text-dark"><strong>Job Role:</strong> ${exp.jobRole || "Not Provided"}</p>
+                        <p class="fs-6 text-dark"><strong>Company:</strong> ${exp.company || "Not Provided"}</p>
+                        <p class="text-muted"><strong>Years Worked:</strong> ${exp.yearsWorked || "Not Provided"}</p>
+                        <p><strong>Details:</strong> ${exp.details || "Not Provided"}</p>
+                        <button type="button" class="delete-work btn btn-danger btn-sm mt-2" data-index="${index}">Delete</button>
+                    `;
+                    workContainer.appendChild(entryDiv);
+                });
+            }
+        
+            addWorkBtn.addEventListener("click", function () {
+                const jobRole = document.getElementById("jobRoleInput").value.trim();
+                const company = document.getElementById("companyInput").value.trim();
+                const yearsWorked = document.getElementById("yearsWorkedInput").value.trim();
+                const details = document.getElementById("detailsInput").value.trim();
+        
+                if (!jobRole || !company || !yearsWorked || !details) {
+                    alert("All fields must be filled!");
+                    return;
+                }
+        
+                const newEntry = { jobRole, company, yearsWorked, details };
+                workArray.push(newEntry);
+                updateHiddenInput();
+        
+                renderWorkExperience();
+        
+                document.getElementById("jobRoleInput").value = "";
+                document.getElementById("companyInput").value = "";
+                document.getElementById("yearsWorkedInput").value = "";
+                document.getElementById("detailsInput").value = "";
+        
+                workInputsDiv.style.display = "none";
+            });
+        
+            workContainer.addEventListener("click", function (event) {
+                if (event.target.classList.contains("delete-work")) {
+                    const index = event.target.dataset.index;
+                    workArray.splice(index, 1);
+                    updateHiddenInput();
+                    renderWorkExperience();
+                }
+            });
+        
+            renderWorkExperience();
+        });
+        </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const skillsInput = document.getElementById("skillsData");
+            const skillsList = document.getElementById("skillsList");
+            const skillInput = document.getElementById("skillInput");
+            const addSkillBtn = document.getElementById("addSkillBtn");
+            const skillsDropdown = document.getElementById("skillsDropdown");
+            const allowedSkills = [
+                "JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust",
+                "Swift", "Kotlin", "Ruby", "PHP", "Perl", "Dart", "Scala", "Objective-C",
+                "R", "MATLAB", "Lua", "HTML", "CSS", "SASS", "LESS", "Bootstrap", "Tailwind CSS",
+                "React", "Angular", "Vue.js", "Svelte", "Next.js", "Nuxt.js", "Gatsby", "jQuery",
+                "WebAssembly", "Node.js", "Express.js", "Django", "Flask", "Spring Boot",
+                "ASP.NET", "Ruby on Rails", "Laravel", "Symfony", "FastAPI", "NestJS", "GraphQL",
+                "MySQL", "PostgreSQL", "MongoDB", "Firebase", "AWS", "Docker", "Kubernetes",
+                "Jenkins", "CI/CD", "Linux", "Bash Scripting", "Cybersecurity", "SEO", "Figma",
+                "Adobe Photoshop", "After Effects", "Unity", "Unreal Engine", "Blockchain"
+            ];
+        
+            let skillsArray = JSON.parse(skillsInput.value || "[]");
+        
+            function updateHiddenInput() {
+                skillsInput.value = JSON.stringify(skillsArray);
+            }
+        
+            function renderSkills() {
+                skillsList.innerHTML = "";
+                skillsArray.forEach((skill, index) => {
+                    const li = document.createElement("li");
+                    li.classList.add("d-flex", "justify-content-between", "align-items-center", "border", "p-2", "rounded", "mb-2");
+        
+                    li.innerHTML = `
+                        <span>${skill}</span>
+                        <button type="button" class="delete-skill btn btn-sm btn-danger" data-index="${index}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    `;
+        
+                    skillsList.appendChild(li);
+                });
+            }
+        
+            function addSkill(skill) {
+                skill = skill.trim();
+                if (!allowedSkills.includes(skill) || skillsArray.includes(skill) || skill === "") return; // Ensure valid & unique skill
+                skillsArray.push(skill);
+                updateHiddenInput();
+                renderSkills();
+                skillInput.value = "";
+                skillsDropdown.innerHTML = "";
+            }
+            skillsList.addEventListener("click", function (event) {
+                if (event.target.closest(".delete-skill")) {
+                    const index = event.target.closest(".delete-skill").dataset.index;
+                    skillsArray.splice(index, 1);
+                    updateHiddenInput();
+                    renderSkills();
+                }
+            });
+            skillInput.addEventListener("input", function () {
+                const query = skillInput.value.trim().toLowerCase();
+                skillsDropdown.innerHTML = "";
+        
+                if (query === "") return;
+        
+                const filteredSkills = allowedSkills.filter(skill => skill.toLowerCase().includes(query));
+        
+                if (filteredSkills.length > 0) {
+                    skillsDropdown.style.display = "block";
+                    filteredSkills.forEach(skill => {
+                        const li = document.createElement("li");
+                        li.classList.add("dropdown-item");
+                        li.textContent = skill;
+                        li.onclick = function () {
+                            addSkill(skill);
+                            skillsDropdown.style.display = "none";
+                        };
+                        skillsDropdown.appendChild(li);
+                    });
+                } else {
+                    skillsDropdown.style.display = "none";
+                }
+            });
+            document.addEventListener("click", function (event) {
+                if (!skillInput.contains(event.target) && !skillsDropdown.contains(event.target)) {
+                    skillsDropdown.style.display = "none";
+                }
+            });
+            addSkillBtn.addEventListener("click", function () {
+                addSkill(skillInput.value.trim());
+            });
+        
+            renderSkills();
+        });
+        </script>
+        
+      
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+    const projectsContainer = document.getElementById("projectsContainer");
+    const showProjectFieldsBtn = document.getElementById("showProjectFields");
+    const projectInputsDiv = document.getElementById("projectInputs");
+    const addProjectBtn = document.getElementById("addProject");
+    const projectsDataInput = document.getElementById("projectsData");
+
+    let projectsArray = JSON.parse(projectsDataInput.value || "[]");
+
+    function updateHiddenInput() {
+        projectsDataInput.value = JSON.stringify(projectsArray);
+    }
+    showProjectFieldsBtn.addEventListener("click", function () {
+        projectInputsDiv.style.display = projectInputsDiv.style.display === "none" ? "block" : "none";
+    });
+
+    function renderProjects() {
+        projectsContainer.innerHTML = "";
+        projectsArray.forEach((project, index) => {
+            const div = document.createElement("div");
+            div.classList.add("d-flex", "justify-content-between", "align-items-start", "border", "p-3", "rounded", "mb-3", "mt-2", "shadow-sm");
+
+            div.innerHTML = `
+                <div>
+                    <h5 class="fw-bold mb-1">Title: ${project.title}</h5>
+                    <p class="mb-1 fs-6 mt-2 mb-1">Description: ${project.description}</p>
+                    <p class="mb-1"><strong>Repo:</strong> <a href="${project.repoLink}" target="_blank" class="text-decoration-none">${project.repoLink}</a></p>
+                    <p class="mb-1"><strong>Live Demo:</strong> <a href="${project.liveDemo}" target="_blank" class="text-decoration-none">${project.liveDemo}</a></p>
+                </div>
+                <button type="button" class="delete-project btn btn-sm btn-danger" data-index="${index}">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            `;
+
+            projectsContainer.appendChild(div);
+        });
+    }
+
+    addProjectBtn.addEventListener("click", function () {
+        const title = document.getElementById("titleInput").value.trim();
+        const description = document.getElementById("descriptionInput").value.trim();
+        const repoLink = document.getElementById("repoLinkInput").value.trim();
+        const liveDemo = document.getElementById("liveDemoInput").value.trim();
+
+        if (!title || !description || !repoLink || !liveDemo) {
+            alert("All fields must be filled!");
+            return;
+        }
+
+        const urlRegex = /^(https?:\/\/)?(www\.)?[\w-]+(\.[a-z]{2,})(\/\S*)?$/i;
+        if (!urlRegex.test(repoLink) || !urlRegex.test(liveDemo)) {
+            alert("Please enter valid URLs for Repo Link and Live Demo.");
+            return;
+        }
+
+        const newProject = { title, description, repoLink, liveDemo };
+        projectsArray.push(newProject);
+        updateHiddenInput();
+        renderProjects();
+
+        document.getElementById("titleInput").value = "";
+        document.getElementById("descriptionInput").value = "";
+        document.getElementById("repoLinkInput").value = "";
+        document.getElementById("liveDemoInput").value = "";
+
+        projectInputsDiv.style.display = "none"; // Hide after adding
+    });
+    projectsContainer.addEventListener("click", function (event) {
+        if (event.target.classList.contains("delete-project") || event.target.closest(".delete-project")) {
+            const index = event.target.closest(".delete-project").dataset.index;
+            projectsArray.splice(index, 1);
+            updateHiddenInput();
+            renderProjects();
+        }
+    });
+
+    renderProjects();
+});
+
+        </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const activityList = document.getElementById("extraActivitiesList");
+        const addActivityBtn = document.getElementById("addActivity");
+        const activityInput = document.getElementById("extraActivitiesInput");
+        const hiddenActivityData = document.getElementById("extraActivitiesData");
+    
+        let activitiesArray = JSON.parse(hiddenActivityData.value || "[]");
+    
+        function updateHiddenInput() {
+            hiddenActivityData.value = JSON.stringify(activitiesArray);
+        }
+    
+        function renderActivities() {
+    activityList.innerHTML = "";
+    const container = document.createElement("div");
+    container.classList.add("d-flex", "flex-wrap", "gap-2", "mt-2");
+
+    activitiesArray.forEach((activity, index) => {
+        const span = document.createElement("span");
+        span.classList.add( "bg-light","text-dark", "p-2", "rounded-pill", "d-flex", "align-items-center", "gap-2","fs-5");
+
+        span.innerHTML = `
+            ${activity}
+            <button type="button" class="delete-activity btn btn-sm btn-close" data-index="${index}" aria-label="Close"></button>
+        `;
+
+        container.appendChild(span);
+    });
+
+    activityList.appendChild(container);
+}
+
+        addActivityBtn.addEventListener("click", function () {
+            const activity = activityInput.value.trim();
+            if (!activity) {
+                alert("Activity cannot be empty!");
+                return;
+            }
+    
+            activitiesArray.push(activity);
+            updateHiddenInput();
+            renderActivities();
+    
+            activityInput.value = "";
+        });
+    
+        activityList.addEventListener("click", function (event) {
+            if (event.target.classList.contains("delete-activity")) {
+                const index = event.target.dataset.index;
+                activitiesArray.splice(index, 1);
+                updateHiddenInput();
+                renderActivities();
+            }
+        });
+    
+        renderActivities();
+    });
+    </script>
+<script>document.addEventListener("DOMContentLoaded", function () {
+    const deletePortfolioBtn = document.getElementById("deletePortfolioBtn");
+    const portfolioInput = document.getElementById("portfolioInput");
+    const portfolioContainer = document.getElementById("portfolioContainer");
+
+    if (deletePortfolioBtn) {
+        deletePortfolioBtn.addEventListener("click", function () {
+            portfolioInput.value = ""; // Clear input
+            portfolioInput.style.display = "block";
+            portfolioContainer.innerHTML = "";
+        });
+    }
+});
+</script>

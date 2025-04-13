@@ -1,0 +1,36 @@
+<% layout("/layouts/baseTemplate")%>
+
+    <div class="row">
+        <h1 class="col-6 offset-3">SignUp on Hirena</h1>
+        <div class="col-6 offset-3 mb-5">
+            <form action="/signup" method="POST" novalidate class="needs-validation ">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                <input name="username" type="text" id="username" class="form-control" required>
+                <div class="invalid-feedback">
+                    This field cannot be empty!!
+                </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                <input name="email" type="email" id="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                <input name="password" type="password" id="password" class="form-control" required>
+                </div>
+<div>
+    <label for="role" class="form-label">Role:</label>
+        <select id="role" name="role" class="form-select">
+            <option value="" disabled selected hidden>Select job type</option>
+            <option value="Admin">Admin</option>
+            <option value="Employer">Employer</option>
+            <option value="JobSeeker">JobSeeker</option>
+        </select>
+</div>
+                <button class="btn btn-dark btn-sm">SignUp</button>
+            </form>
+        </div>
+        
+    </div>

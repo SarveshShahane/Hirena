@@ -1,0 +1,65 @@
+<%layout("layouts/baseTemplate.ejs")%>
+<form action="/jobs/<%=job._id%>?_method=PUT" method="POST">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="job[title]" value="<%=job.title%>" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="company" class="form-label">Company</label>
+        <input type="text" name="job[company]" value="<%=job.company%>"  class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="job[location]" value="<%=job.location%>"  class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="jobType" class="form-label">Job Type:</label>
+        <select id="jobType" name="job[jobType]"  class="form-select">
+            <option value="Full-Time" <%= job.jobType === "Full-Time" ? "selected" : "" %>>Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="Contract">Contract</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Internship">Internship</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="category" class="form-label">Category:</label>
+        <select id="category" name="job[category]" class="form-select" required>
+            <% categories.forEach(category => { %>
+              <option value="<%= category %>" <%= job.category === category ? "selected" : "" %>><%= category %></option>
+            <% }) %>
+          </select>
+          
+        
+    </div>
+    
+    <div class="mb-3">
+        <label for="salary" class="form-label">Salary</label>
+        <input type="number" name="job[salary]" value="<%=job.salary%>"  class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Job Description</label>
+        <textarea name="job[description]" class="form-control" required><%= job.description %></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="requirements" class="form-label">Requirements</label>
+        <textarea name="job[requirements]" class="form-control" required><%=job.requirements%></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="responsibilities" class="form-label">Responsibilities</label>
+        <textarea name="job[responsibilities]"  class="form-control"><%=job.responsibilities%></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="deadline" class="form-label">Application Deadline</label>
+        <input type="date" name="job[deadline]" value="<%=job.deadline%>" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Job Status</label>
+        <select id="status" name="job[status]" class="form-select">
+            <option value="Open" <%= job.status === "Open" ? "selected" : "" %>>Open</option>
+            <option value="Closed" <%= job.status === "Closed" ? "selected" : "" %>>Closed</option>
+            <option value="Paused" <%= job.status === "Paused" ? "selected" : "" %>>Paused</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Edit</button>
+</form>

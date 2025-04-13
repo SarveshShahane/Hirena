@@ -1,0 +1,57 @@
+<% layout("layouts/baseTemplate.ejs") %>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Manage Users</h2>
+
+    <div class="mb-5">
+        <h4 class="text-primary">Employers</h4>
+        <table class="table table-striped table-bordered shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                    <th>Registered On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% employers.forEach(employer => { %>
+                    <tr>
+                        <td><%= employer.profile?.fullName || "N/A" %></td>
+                        <td><%= employer.email %></td>
+                        <td>
+                            <%= employer.profile?.location?.city || "—" %>, 
+                            <%= employer.profile?.location?.country || "—" %>
+                        </td>
+                        <td><%= new Date(employer.createdAt).toLocaleDateString() %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h4 class="text-success">Job Seekers</h4>
+        <table class="table table-striped table-bordered shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                    <th>Registered On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% jobSeekers.forEach(seeker => { %>
+                    <tr>
+                        <td><%= seeker.profile?.fullName || "N/A" %></td>
+                        <td><%= seeker.email %></td>
+                        <td>
+                            <%= seeker.profile?.location?.city || "—" %>, 
+                            <%= seeker.profile?.location?.country || "—" %>
+                        </td>
+                        <td><%= new Date(seeker.createdAt).toLocaleDateString() %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>

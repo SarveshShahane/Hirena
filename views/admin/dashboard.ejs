@@ -1,0 +1,40 @@
+<% layout("layouts/baseTemplate.ejs") %>
+
+<div class="container mt-4">
+    <h2>Welcome, <%= user.username %>!</h2>
+    <p>Role: <%= user.role %></p>
+    <% if (user.role === "Admin") { %>
+        <h3>All Jobs</h3>
+        <a href="/admin/manage-users" class="btn btn-primary mb-3">Manage Users</a>
+    <% }  %>
+    <div class="row">
+        <% if (jobs.length > 0) { %>
+          <% jobs.forEach(job => { %>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title"><%= job.title %></h5>
+                  <p class="card-text"><strong>Company:</strong> <%= job.company %></p>
+                  <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
+                  <p class="card-text"><strong>Total Applications:</strong> <%= job.applications.length %></p>
+                  <a href="/jobs/<%= job._id %>" class="btn btn-primary btn-sm">View Details</a>
+      
+                  <% if (user.role === "Admin") { %>
+                    <form action="/jobs/delete/<%= job._id %>?_method=DELETE" method="POST" style="display:inline;">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-12 text-center">
+            <div class="alert alert-warning mt-4" role="alert">
+              <%= message || "No jobs found." %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      
+</div>

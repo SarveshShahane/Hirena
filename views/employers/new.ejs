@@ -1,0 +1,67 @@
+<%layout("layouts/baseTemplate.ejs")%>
+
+<form action="/jobs" method="POST" novalidate class="needs-validation">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="job[title]" placeholder="Enter job title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="company" class="form-label">Company</label>
+        <input type="text" name="job[company]" placeholder="Enter company" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="job[location]" placeholder="Enter job location" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="jobType" class="form-label">Job Type:</label>
+        <select id="jobType" name="job[jobType]" class="form-select">
+            <option value="" disabled selected hidden>Select job type</option>
+            <option value="Full-Time">Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="Contract">Contract</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Internship">Internship</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="category" class="form-label">Category:</label>
+        <select id="category" name="job[category]" class="form-select" required>
+            <option value="" disabled selected hidden>Select job category</option>
+            <% categories.forEach(category => { %>
+                <option value="<%= category %>"><%= category %></option>
+            <% }) %>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label for="salary" class="form-label">Salary</label>
+        <input type="number" name="job[salary]" placeholder="Enter salary amount" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Job Description</label>
+        <textarea name="job[description]" placeholder="Describe the job role" class="form-control" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="requirements" class="form-label">Requirements</label>
+        <textarea name="job[requirements]" placeholder="Enter job requirements" class="form-control" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="responsibilities" class="form-label">Responsibilities</label>
+        <textarea name="job[responsibilities]" placeholder="Enter job responsibilities" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="deadline" class="form-label">Application Deadline</label>
+        <input type="date" name="job[deadline]" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Job Status</label>
+        <select id="status" name="job[status]" class="form-select">
+            <option value="" disabled selected hidden>Select job status</option>
+            <option value="Open">Open</option>
+            <option value="Closed">Closed</option>
+            <option value="Paused">Paused</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Post Job</button>
+</form>

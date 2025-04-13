@@ -1,0 +1,140 @@
+<%layout("layouts/baseTemplate.ejs")%>
+<main class="hero  mt-4">
+    <section class="text-center">
+        <h1 class="fw-bold">Find Your Dream Job</h1>
+        <p class="lead">Connecting talent with top companies worldwide.</p>
+      
+        <% if (role === "JobSeeker") { %>
+            <form class="d-flex justify-content-center align-items-center my-4" action="/jobs/list" method="GET">
+                <input 
+                    type="text" 
+                    name="job[category]" 
+                    class="form-control w-50 shadow-sm rounded" 
+                    placeholder="Search jobs..."
+                >
+                <button class="btn btn-primary ms-2" type="submit">Search</button>
+            </form>
+        <% } else if (role === "Employer") { %>
+            <div class="text-center my-4">
+                <a href="/employers/dashboard" class="btn btn-outline-success">
+                    Go to Dashboard
+                </a>
+            </div>
+        <% } else if (role === "Admin") { %>
+            <div class="text-center my-4">
+                <a href="/admin/dashboard" class="btn btn-outline-danger">
+                    Go to Dashboard
+                </a>
+            </div>
+        <% } %>
+        
+    </section>
+    <section class="Category  text-center mt-5">
+        <h1 class="fw-bold">Browse Jobs by Category</h1>
+        <div class="row mt-4 ">
+            <div class="col-md-3">
+               <a href="/jobs/list?job%5Bcategory%5D=IT" class="text-decoration-none text-dark">
+                <div class="Category-card p-3 border rounded">
+                    <i class="fas fa-laptop-code fa-2x"></i>
+                    <h5 class="mt-2">Tech&IT</h5>
+                </div>
+               </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/jobs/list?job%5Bcategory%5D=Finance"  class="text-decoration-none text-dark"><div class="Category-card p-3 border rounded">
+                    <i class="fas fa-chart-line fa-2x"></i>
+                    <h5 class="mt-2">Finance</h5>
+                </div></a>
+            </div>
+            <div class="col-md-3">
+                <a href="/jobs/list?job%5Bcategory%5D=Healthcare" class="text-decoration-none text-dark">
+                    <div class="Category-card p-3 border rounded">
+                        <i class="fas fa-user-md fa-2x"></i>
+                        <h5 class="mt-2">HealthCare</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/jobs/list?job%5Bcategory%5D=Marketing" class="text-decoration-none text-dark">
+                    <div class="Category-card p-3 border rounded">
+                        <i class="fas fa-bullhorn fa-2x"></i>
+                        <h5 class="mt-2">Marketing</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="mt-5 LatestJobs">
+        <h1 class="fw-bold">Latest Job Listings</h1>
+        <% if (jobs.length > 0) { %>
+            <div class="row">
+                <% for (let i = Math.max(0, jobs.length - 3); i < jobs.length; i++) { %>
+                    <div class="col-md-4 Category-card">
+                        <div class="border rounded p-3 mb-3">
+                            <h5><%= jobs[i].title %></h5>
+                            <p><i class="fas fa-building"></i> <%= jobs[i].company %></p>
+                            <p><i class="fas fa-map-marker-alt"></i> <%= jobs[i].location %></p>
+                            <a href="/jobs/<%= jobs[i]._id %>" class="btn btn-outline-primary">Apply Now</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% } else { %>
+            <p>No jobs available at the moment.</p>
+        <% } %>
+    </section>
+    <section class="Importance">
+       <div class="text-center">
+        <h1 class="fw-bold">Why Choose Hirena</h1>
+            <p class="lead">Thousands of job seekers and recruiters trust us to find the perfect match.</p>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <i class="fas fa-check-circle fa-3x"></i>
+                    <h5 class="mt-2">Verified Employers</h5>
+                    <p>Work with trusted companies offering genuine job opportunities.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-briefcase fa-3x"></i>
+                    <h5 class="mt-2">Wide Job Network</h5>
+                    <p>Access job listings across different industries and locations.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-user-shield fa-3x"></i>
+                    <h5 class="mt-2">Secure & Reliable</h5>
+                    <p>Our platform ensures data privacy and security.</p>
+                </div>
+            </div>
+       </div>
+    </section>
+    <section class="testimonials text-center mt-5">
+        <h2 class="fw-bold">What Our Users Say</h2>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="testimonial p-3 border rounded">
+                    <p>"Hirena helped me land my dream job in just a few weeks!"</p>
+                    <h6>- Jane Doe, Software Developer</h6>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3 border rounded">
+                    <p>"The best job portal for both freshers and experienced professionals."</p>
+                    <h6>- Mark Smith, Data Analyst</h6>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3 border rounded">
+                    <p>"Easy to use and packed with great opportunities!"</p>
+                    <h6>- Emily Johnson, UX Designer</h6>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="cta text-center mt-5">
+        <h2 class="fw-bold">Start Your Career Journey Today!</h2>
+        <p>Join thousands of job seekers and employers on Hirena.</p>
+    </section>
+</main>
+<nav>
+  
+  </nav>
+  

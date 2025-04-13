@@ -1,0 +1,34 @@
+<% layout("layouts/baseTemplate.ejs") %>
+
+<div class="container mt-4">
+    <h2>Welcome, <%= user.username %>!</h2>
+    <p>Role: <%= user.role %></p>
+        <h3>Your Posted Jobs</h3>
+        <a href="/jobs/new" class="btn btn-success mb-3">Post a New Job</a>
+    <div class="row">
+        <% if (jobs.length > 0) { %>
+            <% jobs.forEach(job => { %>
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= job.title %></h5>
+                            <p class="card-text"><strong>Company:</strong> <%= job.company %></p>
+                            <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
+                            <p class="card-text"><strong>Total Applications:</strong> <%= job.applications.length %></p>
+                            <a href="/jobs/<%= job._id %>" class="btn btn-primary btn-sm">View Details</a>
+                      
+                         
+                                <a href="/jobs/edit/<%= job._id %>" class="btn btn-warning btn-sm">Edit</a>
+                          
+                          
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="col-12 text-center">
+                <p>No jobs found.</p>
+            </div>
+        <% } %>
+    </div>
+</div>

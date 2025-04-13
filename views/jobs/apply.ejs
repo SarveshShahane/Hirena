@@ -1,0 +1,29 @@
+<% layout("layouts/baseTemplate.ejs") %>
+
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            <h2 class="mb-3">Apply for <%= job.title %>
+            </h2>
+            <p><strong>Company:</strong>
+                <%= job.company %>
+            </p>
+            <p><strong>Location:</strong>
+                <%= job.location %>
+            </p>
+
+            <% if (!resume) { %>
+                <div class="alert alert-warning">
+                    You have not uploaded a resume yet. <a href="/profile/resume">Create Resume</a>
+                </div>
+                <% } else { %>
+                    <form action="/apply/<%= job._id %>" method="POST">
+                        <div class="form-group">
+                            <label for="coverLetter">Cover Letter</label>
+                            <textarea class="form-control" id="coverLetter" name="coverLetter" rows="4"
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Submit Application</button>
+                    </form>
+                    <% } %>
+        </div>
+    </div>

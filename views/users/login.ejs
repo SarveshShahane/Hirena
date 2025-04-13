@@ -1,0 +1,20 @@
+<% layout("/layouts/baseTemplate")%>
+
+<div class="row">
+    <h1 class="col-6 offset-3 mb-5">Login on Hirena</h1>
+
+        <form action="/login" method="POST" novalidate class="needs-validation ">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input name="username" type="text" id="username" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input name="password" type="password" id="password" class="form-control" required>
+            </div>
+                <p>New User ? <a href="/signup">Signup now</a></p>
+            <button class="btn btn-dark btn-sm mb-3">Login</button>
+        </form>
+    </div>
+</div>

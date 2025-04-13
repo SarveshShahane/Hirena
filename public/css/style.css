@@ -1,0 +1,147 @@
+
+body{
+    font-family: 'Plus Jakarta Sans',sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+} 
+.container{
+    flex: 1;
+}
+.job-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.job-card:hover {
+    transform: translateY(-5px);
+}
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: gray;
+}
+.save-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.job-company {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.job-company img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.job-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.job-description {
+    font-size: 0.9rem;
+    color: gray;
+}
+.job-tags {
+    margin: 10px 0;
+}
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+.job-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.resume{
+    border: solid 2px rgb(223, 194, 194);
+    border-radius: 10px;
+}
+.hr{
+    color: pink !important;
+}
+.add-edu ,.add-work,.add-proj{
+    background-color: white !important;
+    color: blueviolet !important;
+    text-decoration: none;
+    border: none;
+}
+
+.education-entry {
+    background-color: #f8f9fa !important; 
+    border: 1px solid #ddd !important; 
+    padding: 15px !important;
+    margin-bottom: 10px !important;
+    border-radius: 8px !important;
+}
+#educationContainer .education-entry .edu-degree {
+    color: pink !important;
+}
+.education-entry .edu-degree {
+    color: pink !important;
+    font-weight: bold;
+}
+
+
+.location{
+    padding-right: 10px;
+}
+.hired-container {
+    display: flex;
+    align-items: center;  /* Ensures vertical alignment */
+    gap: 8px; /* Adds spacing between icon and text */
+    color: #6c757d; /* Muted text color */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 6px; /* Rounded corners */
+    padding: 8px 12px; /* Padding for spacing */
+    width: fit-content; /* Keeps the box compact */
+    white-space: nowrap; /* Prevents text from breaking into a new line */
+}
+.hired-container i {
+    font-size: 18px; /* Adjust icon size */
+}
+.f-info-links{
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-links:hover{
+    text-decoration:underline;
+}
+.f-info-links,.f-info-socials,.f-info-brand{
+    width: 100%;
+    display: flex;
+    align-items:center ;
+    justify-content: center;
+}
+.f-info-socials i{
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+.f-info{
+    text-align: center;
+    display: flex;
+    height: 8rem;
+     background-color:#ebebeb ;
+     flex-wrap: wrap;
+     justify-content: center;
+     align-items: space-evenly;
+}
+
+.Category-card {
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .Category-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  

@@ -1,0 +1,103 @@
+<% layout("layouts/baseTemplate.ejs") %>
+
+<div class="container mt-4">
+    <h2>Welcome, <%= user.username %>!</h2>
+    <p>Role: <%= user.role %></p>
+    <% if (user.role === "Admin") { %>
+        <h3>All Jobs</h3>
+        <a href="/admin/manage-users" class="btn btn-primary mb-3">Manage Users</a>
+    <% } else if (user.role === "Employer") { %>
+        <h3>Your Posted Jobs</h3>
+        <a href="/jobs/new" class="btn btn-success mb-3">Post a New Job</a>
+    <% } else { %>
+        <form class="d-flex justify-content-center align-items-center my-4 position-relative" action="/jobs/list" method="GET">
+            <input 
+                type="text" 
+                id="jobCategoryInput"
+                name="job[category]" 
+                class="form-control w-50 shadow-sm rounded" 
+                placeholder="Search jobs..." 
+                autocomplete="off"
+            >
+            <button class="btn btn-primary ms-2" type="submit">Search</button>
+        
+            <!-- Custom dropdown -->
+            <ul id="categoryDropdown" class="list-group position-absolute w-50 shadow mt-1" style="z-index: 1000; display: none; max-height: 200px; overflow-y: auto;">
+                <% categories.forEach(category => { %>
+                    <li class="list-group-item category-option" style="cursor: pointer;"><%= category %></li>
+                <% }) %>
+            </ul>
+        </form>
+        
+        <script>
+            const input = document.getElementById("jobCategoryInput");
+            const dropdown = document.getElementById("categoryDropdown");
+            const items = document.querySelectorAll(".category-option");
+        
+            input.addEventListener("input", () => {
+                const query = input.value.toLowerCase();
+                let anyVisible = false;
+        
+                items.forEach(item => {
+                    if (item.textContent.toLowerCase().includes(query) && query !== "") {
+                        item.style.display = "block";
+                        anyVisible = true;
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+        
+                dropdown.style.display = anyVisible ? "block" : "none";
+            });
+        
+            items.forEach(item => {
+                item.addEventListener("click", () => {
+                    input.value = item.textContent;
+                    dropdown.style.display = "none";
+                });
+            });
+        
+            // Hide dropdown if clicked outside
+            document.addEventListener("click", (e) => {
+                if (!e.target.closest("#categoryDropdown") && e.target !== input) {
+                    dropdown.style.display = "none";
+                }
+            });
+        </script>
+        
+        <h3>Available Jobs</h3>
+    <% } %>
+    <div class="row">
+        <% if (jobs.length > 0) { %>
+          <% jobs.forEach(job => { %>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title"><%= job.title %></h5>
+                  <p class="card-text"><strong>Company:</strong> <%= job.company %></p>
+                  <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
+                  <p class="card-text"><strong>Total Applications:</strong> <%= job.applications.length %></p>
+                  <a href="/jobs/<%= job._id %>" class="btn btn-primary btn-sm">View Details</a>
+      
+                  <% if (user.role === "Employer" && user._id.toString() === job.owner.toString()) { %>
+                    <a href="/jobs/edit/<%= job._id %>" class="btn btn-warning btn-sm">Edit</a>
+                  <% } %>
+                  <% if (user.role === "Admin") { %>
+                    <form action="/jobs/delete/<%= job._id %>?_method=DELETE" method="POST" style="display:inline;">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-12 text-center">
+            <div class="alert alert-warning mt-4" role="alert">
+              <%= message || "No jobs found." %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      
+</div>
