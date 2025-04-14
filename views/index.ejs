@@ -74,7 +74,9 @@
                             <h5><%= jobs[i].title %></h5>
                             <p><i class="fas fa-building"></i> <%= jobs[i].company %></p>
                             <p><i class="fas fa-map-marker-alt"></i> <%= jobs[i].location %></p>
-                            <a href="/jobs/<%= jobs[i]._id %>" class="btn btn-outline-primary">Apply Now</a>
+                      <%if(user && user.role === "JobSeeker") { %>
+                        <a href="/jobs/<%= jobs[i]._id %>" class="btn btn-outline-primary">Apply Now</a>
+                        <%}%>
                         </div>
                     </div>
                 <% } %>
@@ -134,7 +136,5 @@
         <p>Join thousands of job seekers and employers on Hirena.</p>
     </section>
 </main>
-<nav>
-  
-  </nav>
+
   

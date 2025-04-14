@@ -11,7 +11,10 @@ const {
 const wrapAsync = require("../utils/wrapAsync");
 const User = require("../models/user");
 const applicationController = require("../controllers/application");
-
+const Application = require("../models/application");
+const Job = require("../models/job");
+const Resume = require("../models/resume");
+const { isResumeComplete } = require("../utils/resumeCheck");
 // Create a new application
 router.get(
   "/apply/:jobId",
@@ -40,7 +43,12 @@ router.get(
   "/jobseeker/applications",
   isLoggedIn,
   isJobSeeker,
-  wrapAsync(applicationController.getAllJobSeekerApplications)
+  wrapAsync(async (req, res) => {
+    const applications = await Application.find({ jobSeeker: req.user._id })
+      .populate("job", "title")
+      .populate("resume");
+    res.render("jobs/application", { applications });
+  })
 );
 
 //resumeView

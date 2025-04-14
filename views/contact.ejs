@@ -1,0 +1,30 @@
+<%layout("./layouts/baseTemplate.ejs")%>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Contact Us</h2>
+  <p class="text-center">Got questions or feedback? We'd love to hear from you!</p>
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+      <form action="mailto:hirena.job@gmail.com" method="POST" enctype="text/plain">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" class="form-control" name="name" id="name" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" class="form-control" name="email" id="email" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="message" class="form-label">Your Message</label>
+          <textarea class="form-control" name="message" id="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
+

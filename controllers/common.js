@@ -5,3 +5,10 @@ module.exports.index = async (req, res) => {
     res.render("index.ejs", { jobs, role: req.user.role });
   };
   
+  module.exports.contact = async (req, res) => {
+    res.render("contact.ejs", { role: req.user.role });
+  }
+
+  module.exports.about = async (req, res) => {
+    res.render("about.ejs");
+  }

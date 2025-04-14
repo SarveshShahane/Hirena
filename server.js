@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const Mongo_URL = "mongodb://127.0.0.1:27017/Job_Portal";
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
@@ -38,7 +37,7 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(Mongo_URL);
+  await mongoose.connect(process.env.MONGO_URI);
 }
 
 //session details

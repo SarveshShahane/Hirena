@@ -16,13 +16,16 @@
             <a class="nav-link fw-semibold px-3 text-dark" href="/jobs/list">Jobs</a>
           </li>
         <% } %>
-        
-        
+        <%if(user && user.role === "Employer") { %>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold px-3 text-dark" href="/employer/applications">Applications</a>
+          </li>
+        <%}%>
         <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 text-dark" href="/contact">Contact</a>
+          <a class="nav-link fw-semibold px-3 text-dark" href="/hirena/contact">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 text-dark" href="/about">About Us</a>
+          <a class="nav-link fw-semibold px-3 text-dark" href="/hirena/about">About Us</a>
         </li>
 
         <% if (user) { %> 

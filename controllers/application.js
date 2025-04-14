@@ -2,7 +2,7 @@ const Application = require("../models/application");
 const Job = require("../models/job");
 const Resume = require("../models/resume");
 const User = require("../models/user");
-
+const wrapAsync = require("../utils/wrapAsync");
 const { isResumeComplete } = require("../utils/resumeCheck");
 
 module.exports.newApplication = async (req, res) => {
@@ -65,12 +65,6 @@ module.exports.getAllApplications = async (req, res) => {
   res.render("employers/application", { applications });
 };
 
-module.exports.getAllApplicationsForJobSeeker = async (req, res) => {
-  const applications = await Application.find({ jobSeeker: req.user._id })
-    .populate("job", "title")
-    .populate("resume");
-  res.render("jobs/application", { applications });
-};
 
 module.exports.viewResume = async (req, res) => {
   const { resumeId } = req.params;
