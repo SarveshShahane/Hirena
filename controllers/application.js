@@ -38,8 +38,9 @@ module.exports.applyForJob = async (req, res) => {
     jobSeeker: req.user._id,
   });
 
-  if (existingApplication) {
-    return res.status(400).send("You have already applied for this job.");
+  if (existingApplication) {  
+    req.flash("error", "You have already applied for this job.");
+    return res.redirect(`/jobs/${jobId}`);
   }
 
   const application = new Application({
