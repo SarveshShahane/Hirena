@@ -190,6 +190,11 @@ const allowedSkills = [
   "Quantum Computing",
   "IoT",
   "3D Printing",
+  "Video Editing",
+  "Audio Editing",
+  "Crafting",
+  "Gaming",
+  "Ninja hattori",
 ];
 
 module.exports = allowedSkills;
