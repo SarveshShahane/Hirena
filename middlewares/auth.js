@@ -20,7 +20,10 @@ function isAdmin(req, res, next) {
   if (req.isAuthenticated() && req.user.role === "Admin") return next();
   res.status(403).send("Access Denied: Admins Only");
 }
-
+function isOwner(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === "Owner") return next();
+  res.status(403).send("Access Denied: Owner Only");
+}
 function isEmployer(req, res, next) {
   if (req.isAuthenticated() && req.user.role === "Employer") return next();
   res.status(403).send("Access Denied: Employers Only");
