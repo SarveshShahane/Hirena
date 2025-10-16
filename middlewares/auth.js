@@ -38,6 +38,12 @@ function isJobSeeker(req, res, next) {
   }
   res.redirect("/");
 }
+function isCEO(req, res, next) {
+  if (req.user && req.user.role === "CEO") {
+    return next();
+  }
+  res.redirect("/ceo");
+}
 module.exports = {
   checkRole,
   isLoggedIn,
