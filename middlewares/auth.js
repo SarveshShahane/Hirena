@@ -6,7 +6,7 @@ function checkRole(role) {
     next();
   };
 }
-
+// om shahane
 function isLoggedIn(req, res, next) {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
