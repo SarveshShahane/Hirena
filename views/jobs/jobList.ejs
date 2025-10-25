@@ -19,6 +19,15 @@
                 placeholder="Search jobs..." 
                 autocomplete="off"
             >
+  <form class="d-flex justify-content-center align-items-center my-4 position-relative" action="/jobs/list" method="GET">
+            <input 
+                type="text" 
+                id="jobCategoryInput"
+                name="job[category]" 
+                class="form-control w-50 shadow-sm rounded" 
+                placeholder="Search jobs..." 
+                autocomplete="off"
+            >
             <button class="btn btn-primary ms-2" type="submit">Search</button>
         
             <!-- Custom dropdown -->
