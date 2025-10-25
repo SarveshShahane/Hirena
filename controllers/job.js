@@ -58,6 +58,11 @@ module.exports.editedJob = async (req, res) => {
   await Job.findByIdAndUpdate(id, req.body.job);
   res.redirect("/employers/dashboard");
 };
+module.exports.editedJob2 = async (req, res) => {
+  let { id } = req.params2;
+  await Job.findByIdAndUpdate(id, req.body.job);
+  res.redirect("/employers/dashboard");
+};
 
 module.exports.show = async (req, res) => {
   const details = await Job.findById(req.params.id).populate("applications");
