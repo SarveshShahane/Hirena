@@ -17,6 +17,10 @@ module.exports.profile=async (req, res) => {
     if (!req.user) return res.redirect("/login");
     res.render("profile", { user: req.user });
   }
+module.exports.profile2=async (req, res) => {
+    if (!req.user) return res.redirect("/login2");
+    res.render("profile", { user: req.user2 });
+  }
 
   module.exports.updateProfile=async (req, res) => {
     if (!req.user) return res.redirect("/login");
