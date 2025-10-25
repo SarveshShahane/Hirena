@@ -6,6 +6,14 @@ function checkRole(role) {
     next();
   };
 }
+function checkRole2(role) {
+  return (req, res, next) => {
+    if (!req.isAuthenticated() || req.user.role !== role) {
+      return res.status(403).send("Access Denied");
+    }
+    next();
+  };
+}
 // om shahane
 function isLoggedIn(req, res, next) {
   if (!req.isAuthenticated()) {
