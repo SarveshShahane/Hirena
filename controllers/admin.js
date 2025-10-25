@@ -10,7 +10,13 @@ module.exports.dashboard=async (req, res) => {
       jobs: jobs,
     });
   }
-
+module.exports.dashboard2=async (req, res) => {
+    const jobs = await Job.find({}).populate("applications");
+    res.render("admin/dashboard2.ejs", {
+      user: req.user,
+      jobs: jobs,
+    });
+  }
   module.exports.manageUsers=async (req, res) => {
     const employers = await User.find({ role: "Employer" });
     const jobSeekers = await User.find({ role: "JobSeeker" });

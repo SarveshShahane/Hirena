@@ -20,7 +20,17 @@ module.exports.signup = async (req, res) => {
   req.flash("success", "Verification email sent. Please check your inbox.");
   res.redirect("/login");
 };
+module.exports.signup2 = async (req, res) => {
+  const { username, email, password, role } = req.body;
+  const verificationToken = crypto.randomBytes(32).toString("hex");
+  const newUser = new User({ username, email, role, verificationToken });
+  const registeredUser = await User.register(newUser, password);
 
+  await sendVerificationEmail(email, verificationToken);
+
+  req.flash("success", "Verification email sent. Please check your inbox.");
+  res.redirect("/login");
+};
 module.exports.mailVerify = async (req, res) => {
   const { token } = req.params;
   const user = await User.findOne({ verificationToken: token });

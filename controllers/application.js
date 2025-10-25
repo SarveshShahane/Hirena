@@ -14,7 +14,15 @@ module.exports.newApplication = async (req, res) => {
 
   res.render("jobs/apply", { job, resume });
 };
+module.exports.newApplication2 = async (req, res) => {
+  const { jobId } = req.params;
+  const job = await Job.findById(jobId2);
+  if (!job) return res.status(404).send("Job not found2");
 
+  const resume = await Resume.findOne({ user: req.user._id });
+
+  res.render("jobs/apply", { job, resume });
+};
 module.exports.applyForJob = async (req, res) => {
   const user = await User.findById(req.user._id).populate("profile.resume");
 
