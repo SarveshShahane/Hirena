@@ -11,7 +11,16 @@ const transporter = nodemailer.createTransport({
     },
   });
   
-
+const transporter2 = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+  
 module.exports.sendVerificationEmail = async (email, token) => {
   const verificationLink = `http://localhost:2022/verify-email/${token}`;
 
