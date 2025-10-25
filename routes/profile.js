@@ -24,3 +24,17 @@ router.get("/resume", isLoggedIn, wrapAsync(profileController.viewResume));
 router.post("/resume", isLoggedIn, wrapAsync(profileController.updateResume));
 
 module.exports = router;
+//view profile
+router.get("/", wrapAsync(profileController.profile));
+
+//update profile
+router.put("/", wrapAsync(profileController.updateProfile));
+
+//view resume
+router.get("/resume", isLoggedIn, wrapAsync(profileController.viewResume));
+
+//update resume
+router.post("/resume", isLoggedIn, wrapAsync(profileController.updateResume));
+
+module.exports = router;
+
